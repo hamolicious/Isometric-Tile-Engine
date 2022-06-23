@@ -1,5 +1,4 @@
 import os
-from random import choice
 import pygame
 from time import time
 from vector import Vec2d
@@ -26,19 +25,16 @@ world = World()
 ConfigManager.set_config('tile-size', Vec2d(32))
 CHUNK_SIZE = 10
 
-house = Vec2d.zero()
 for i in range(0, CHUNK_SIZE):
 	for j in range(0, CHUNK_SIZE):
-		name = choice([
+		world.add_tile(Tile(Vec2d(i, j), ImageLoader.select_random_image_from([
 			'grass',
 			'dirt',
 			'blue_flowers',
 			'red_flowers',
 			'yellow_flowers',
 			'house',
-		])
-		world.add_tile(Tile(Vec2d(i, j), ImageLoader.get_image(name)))
-		if name == 'house' : house = len(world.tiles) - 1
+		])))
 
 world.offset = Vec2d(size).div(2)
 
@@ -74,5 +70,3 @@ while True:
 	Globals.set_value('delta-time', delta_time)
 	Globals.set_value('frame-rate', int(clock.get_fps()))
 	pygame.display.set_caption(f'Framerate: {int(clock.get_fps())}')
-
-	pygame.image.save(screen, f'output/output-{int(world.tiles[house].frame.current_frame)}.png')
